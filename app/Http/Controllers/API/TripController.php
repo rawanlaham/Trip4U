@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ImageTripResource;
 use App\Http\Resources\TripResource;
 use App\Models\Country;
 use App\Models\Destination;
@@ -28,14 +29,19 @@ class TripController extends Controller
 
   public function getImagesForTrip($id)
   {
-    $trip = Trip::findOrFail($id)->getMedia('avatars');
-    return response()->json($trip);
+    $trip = Trip::findOrFail($id);
+    $mediaItems = $trip->getMedia('avatars');
+    return ImageTripResource::collection($mediaItems);
   }
   public function getProfileImageForTrip($id)
   {
     try{
     $trip = Trip::findOrFail($id)->getMedia('trip_profile');
+<<<<<<< HEAD
     return TripResource::collection($trip);
+=======
+    return ImageTripResource::collection($trip);
+>>>>>>> 9ec4109fa5cd4da0c440fe96abf38c1ba56f9574
     }
     catch(\Exception $e){
       return response()->json(['error' => 'No Profile image for this trip.'], 500);
